@@ -24,6 +24,11 @@ dependencies {
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '2.5.2'
     //Thư viện của upload file
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+    //Hibernate + JPA
+    implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.3.0.Final'
+    implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.3.0.Final'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
+    implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.5'
 }
 
 test {

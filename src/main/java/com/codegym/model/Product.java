@@ -1,6 +1,12 @@
 package com.codegym.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -10,6 +16,10 @@ public class Product {
     private String image;
 
     private double price;
+
+    @ManyToOne
+    private Category category;
+
     public Long getId() {
         return id;
     }
@@ -48,5 +58,13 @@ public class Product {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
