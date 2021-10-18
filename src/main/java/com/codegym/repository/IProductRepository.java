@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IProductRepository extends IGeneralRepository<Product> {
     List<Product> findByName(String name);
+    void insertProductUsingProcedure(Product product);
 }

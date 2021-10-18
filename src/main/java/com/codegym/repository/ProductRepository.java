@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -51,5 +52,13 @@ public class ProductRepository implements IProductRepository {
     @Override
     public List<Product> findByName(String name) {
         return null;
+    }
+
+    @Override
+    public void insertProductUsingProcedure(Product product) {
+        Query query = entityManager.createNativeQuery("call insertProduct(?1,?2)");
+        query.setParameter(1, product.getName());
+        query.setParameter(2, product.getPrice());
+        query.executeUpdate();
     }
 }

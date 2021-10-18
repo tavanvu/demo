@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<img id="img-of-the-day">
+<form action="">
+    <select name="rating">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    <label>Author:</label>
+    <input type="text" name="author">
+    <label>Feedback:</label>
+    <textarea type="text" name="feedback"></textarea>
+    <button>Comment</button>
+</form>
+<hr>
+<p>+5 So Awesome</p>
+<hr>
+<p>+4 Great</p>
+<hr>
+<p>+3 Good</p>
+<hr>
+<p>+2 Not good</p>
+<hr>
+<p>+1 Bad good</p>
+<script>
+    let query = 'https://api.nasa.gov/planetary/apod?api_key=eZf0KZZiZrH3KBzXHpG38czox86CIR6AHbxqiYq1';
+    let request = new XMLHttpRequest();
+    request.open('GET', query);
+    request.onload = function() {
+        if (request.status === 200) {
+            let response = JSON.parse(request.responseText);
+            document.getElementById('img-of-the-day').setAttribute('src', response.url);
+        }
+    };
+    request.send();
+</script>
 
 </body>
 </html>
