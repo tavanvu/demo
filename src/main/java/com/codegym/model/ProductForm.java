@@ -13,6 +13,8 @@ public class ProductForm {
 
     private double price;
 
+    private Category category;
+
     public Long getId() {
         return id;
     }
@@ -51,5 +53,13 @@ public class ProductForm {
 
     public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

@@ -24,7 +24,7 @@ public class ProductService implements IProductService {
 
     @Override
     public void save(Product product) {
-        productRepository.insertProductUsingProcedure(product);
+        productRepository.save(product);
     }
 
     @Override

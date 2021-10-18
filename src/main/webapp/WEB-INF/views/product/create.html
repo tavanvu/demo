@@ -24,6 +24,14 @@
         <input type="text" id="description" th:field="*{description}">
     </div>
     <div>
+        <label for="category">Category</label>
+        <select id="category" th:field="*{category}">
+            <option th:each="category: ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.name}"></option>
+        </select>
+    </div>
+    <div>
         <label for="image">Image</label>
         <input type="file" id="image" th:field="*{image}">
     </div>

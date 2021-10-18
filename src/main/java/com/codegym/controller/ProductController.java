@@ -1,7 +1,9 @@
 package com.codegym.controller;
 
+import com.codegym.model.Category;
 import com.codegym.model.Product;
 import com.codegym.model.ProductForm;
+import com.codegym.service.ICategoryService;
 import com.codegym.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +24,16 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
     @Value("${file-upload}")
     private String fileUpload;
+
+    @ModelAttribute(name = "categories")
+    public List<Category> categories() {
+        return categoryService.findAll();
+    }
 
     @GetMapping
     public ModelAndView showAll(@RequestParam(name = "q", required = false) String name) {
@@ -71,7 +81,59 @@ public class ProductController {
         product.setPrice(productForm.getPrice());
         product.setDescription(productForm.getDescription());
         product.setImage(fileName);
+        product.setCategory(productForm.getCategory());
         productService.save(product);
         return "redirect:/product";
     }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id) {
+        Product product = productService.findById(id);
+        if (product == null) {
+            return new ModelAndView("error-404");
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/product/edit");
+            modelAndView.addObject("product", product);
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/edit")
+    public ModelAndView editProduct(@ModelAttribute(name = "product") ProductForm productForm) {
+        MultipartFile multipartFile = productForm.getImage();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(productForm.getImage().getBytes(), new File(fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Product product = new Product();
+        product.setId(productForm.getId());
+        product.setName(productForm.getName());
+        product.setPrice(productForm.getPrice());
+        product.setDescription(productForm.getDescription());
+        product.setImage(fileName);
+        product.setCategory(productForm.getCategory());
+        productService.save(product);
+        return new ModelAndView("redirect:/product");
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
+        Product product = productService.findById(id);
+        if (product == null) {
+            return new ModelAndView("error-404");
+        } else {
+            ModelAndView modelAndView = new ModelAndView("/product/delete");
+            modelAndView.addObject("product", product);
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/delete")
+    public ModelAndView deleteProduct(@ModelAttribute ProductForm productForm) {
+        productService.remove(productForm.getId());
+        return new ModelAndView("redirect:/product");
+    }
+
 }

@@ -4,10 +4,7 @@ import com.codegym.model.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -28,7 +25,11 @@ public class ProductRepository implements IProductRepository {
     public Product findById(Long id) {
         TypedQuery<Product> query = entityManager.createQuery("select p from Product as p where p.id = :id", Product.class);
         query.setParameter("id", id);
-        return query.getSingleResult();
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

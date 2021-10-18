@@ -31,8 +31,8 @@
         <td th:text="${product.price}"></td>
         <td th:text="${product.description}"></td>
         <td><img width="150" height="150" th:src="@{'/img/' + ${product.image}}"></td>
-        <td>Edit</td>
-        <td>Delete</td>
+        <td><a th:href="@{/product/edit/__${product.id}__}">Edit</a></td>
+        <td><a th:href="@{/product/delete/__${product.id}__}">Delete</a></td>
     </tr>
 </table>
 </body>
