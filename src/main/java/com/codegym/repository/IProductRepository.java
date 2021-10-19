@@ -1,10 +1,13 @@
 package com.codegym.repository;
 
 import com.codegym.model.Product;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface IProductRepository extends IGeneralRepository<Product> {
-    List<Product> findByName(String name);
-    void insertProductUsingProcedure(Product product);
+@Repository
+public interface IProductRepository extends CrudRepository<Product, Long> {
+    List<Product> findByNameContaining(String name);
+//    void insertProductUsingProcedure(Product product);
 }

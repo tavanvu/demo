@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -31,14 +32,14 @@ public class ProductController {
     private String fileUpload;
 
     @ModelAttribute(name = "categories")
-    public List<Category> categories() {
+    public Iterable<Category> categories() {
         return categoryService.findAll();
     }
 
     @GetMapping
     public ModelAndView showAll(@RequestParam(name = "q", required = false) String name) {
         ModelAndView modelAndView = new ModelAndView("/product/list");
-        List<Product> products;
+        Iterable<Product> products;
         if (name == null) {
             products = productService.findAll();
         } else {
@@ -88,8 +89,8 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        if (product == null) {
+        Optional<Product> product = productService.findById(id);
+        if (!product.isPresent()) {
             return new ModelAndView("error-404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/product/edit");
@@ -120,8 +121,8 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public ModelAndView showDeleteForm(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        if (product == null) {
+        Optional<Product> product = productService.findById(id);
+        if (!product.isPresent()) {
             return new ModelAndView("error-404");
         } else {
             ModelAndView modelAndView = new ModelAndView("/product/delete");
