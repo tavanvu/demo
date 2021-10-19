@@ -22,7 +22,11 @@ public class CategoryFormatter implements Formatter<Category> {
     @Override
     public Category parse(String text, Locale locale) throws ParseException {
         Optional<Category> categoryOptional = categoryService.findById(Long.parseLong(text));
-        return categoryOptional.orElse(null);
+        if (categoryOptional.isPresent()){
+            return categoryOptional.get();
+        }
+        return null;
+        //return categoryOptional.orElse(null);
     }
 
     @Override

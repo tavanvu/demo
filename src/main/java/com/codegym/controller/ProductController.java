@@ -7,6 +7,9 @@ import com.codegym.service.ICategoryService;
 import com.codegym.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
@@ -37,28 +40,28 @@ public class ProductController {
     }
 
     @GetMapping
-    public ModelAndView showAll(@RequestParam(name = "q", required = false) String name) {
+    public ModelAndView showAll(@RequestParam(name = "q", required = false) String name,@PageableDefault(size = 5) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("/product/list");
-        Iterable<Product> products;
+        Page<Product> products;
         if (name == null) {
-            products = productService.findAll();
+            products = productService.findAll(pageable);
         } else {
-            products = productService.findByName(name);
+            products = productService.findByNameContaining(name, pageable);
         }
         modelAndView.addObject("products", products);
         return modelAndView;
     }
 
-    @GetMapping("/search")
-    public ModelAndView findByName(@RequestParam(name = "q") Optional<String> name) {
-        if (name.isPresent()) {
-            ModelAndView modelAndView = new ModelAndView("/product/list");
-            List<Product> products = productService.findByName(name.get());
-            modelAndView.addObject("products", products);
-            return modelAndView;
-        }
-        return new ModelAndView("/error-404");
-    }
+//    @GetMapping("/search")
+//    public ModelAndView findByName(@RequestParam(name = "q") Optional<String> name) {
+//        if (name.isPresent()) {
+//            ModelAndView modelAndView = new ModelAndView("/product/list");
+//            List<Product> products = productService.fin(name.get());
+//            modelAndView.addObject("products", products);
+//            return modelAndView;
+//        }
+//        return new ModelAndView("/error-404");
+//    }
 
     @GetMapping("/create")
     public ModelAndView showCreateForm() {
