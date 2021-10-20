@@ -1,6 +1,7 @@
 package com.codegym.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "products")
@@ -9,6 +10,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "VARCHAR(50)", nullable = false)
     private String name;
 
     private String description;

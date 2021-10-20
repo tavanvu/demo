@@ -11,7 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -71,7 +74,11 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String createProduct(@ModelAttribute ProductForm productForm) {
+    public String createProduct(@Validated @ModelAttribute(name = "product") ProductForm productForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasFieldErrors()){
+            model.addAttribute("product", productForm);
+            return "/product/create";
+        }
         MultipartFile multipartFile = productForm.getImage();
         String fileName = multipartFile.getOriginalFilename();
         try {
