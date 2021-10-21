@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.exception.NotFoundException;
 import com.codegym.model.Category;
 import com.codegym.model.Product;
 import com.codegym.model.ProductForm;
@@ -19,10 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.swing.text.html.Option;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -43,7 +42,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ModelAndView showAll(@RequestParam(name = "q", required = false) String name,@PageableDefault(size = 5) Pageable pageable) {
+    public ModelAndView showAll(@RequestParam(name = "q", required = false) String name, @PageableDefault(size = 5) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("/product/list");
         Page<Product> products;
         if (name == null) {
@@ -74,8 +73,8 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public String createProduct(@Validated @ModelAttribute(name = "product") ProductForm productForm, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasFieldErrors()){
+    public String createProduct(Model model, @Validated @ModelAttribute(name = "product") ProductForm productForm, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
             model.addAttribute("product", productForm);
             return "/product/create";
         }
@@ -98,10 +97,10 @@ public class ProductController {
     }
 
     @GetMapping("/edit/{id}")
-    public ModelAndView showEditForm(@PathVariable Long id) {
+    public ModelAndView showEditForm(@PathVariable Long id) throws NotFoundException {
         Optional<Product> product = productService.findById(id);
         if (!product.isPresent()) {
-            return new ModelAndView("error-404");
+            throw new NotFoundException();
         } else {
             ModelAndView modelAndView = new ModelAndView("/product/edit");
             modelAndView.addObject("product", product);
@@ -130,10 +129,10 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public ModelAndView showDeleteForm(@PathVariable Long id) {
+    public ModelAndView showDeleteForm(@PathVariable Long id) throws NotFoundException {
         Optional<Product> product = productService.findById(id);
         if (!product.isPresent()) {
-            return new ModelAndView("error-404");
+            throw new NotFoundException();
         } else {
             ModelAndView modelAndView = new ModelAndView("/product/delete");
             modelAndView.addObject("product", product);
@@ -146,5 +145,10 @@ public class ProductController {
         productService.remove(productForm.getId());
         return new ModelAndView("redirect:/product");
     }
+
+//    @ExceptionHandler(NotFoundException.class)
+//    public ModelAndView notFound() {
+//        return new ModelAndView("error-404");
+//    }
 
 }

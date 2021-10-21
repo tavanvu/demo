@@ -1,5 +1,6 @@
 package com.codegym.config;
 
+import com.codegym.aspect.Logger;
 import com.codegym.formater.CategoryFormatter;
 import com.codegym.service.CategoryService;
 import org.springframework.beans.BeansException;
@@ -7,10 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
@@ -43,6 +41,7 @@ import java.util.Properties;
 @EnableJpaRepositories("com.codegym.repository")
 @PropertySource("classpath:upload-file.properties")
 @EnableSpringDataWebSupport
+@EnableAspectJAutoProxy
 public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
     @Value("${file-upload}")
     private String fileUpload;
@@ -144,4 +143,9 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
     public void addFormatters(FormatterRegistry registry) {
         registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
     }
+
+//    @Bean
+//    public Logger logger(){
+//        return new Logger();
+//    }
 }
