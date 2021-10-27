@@ -5,62 +5,136 @@
     <title>Title</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
-
-        getAll();
         function getContent(i, data) {
-        return        `<tr>
+            return `<tr>
                    <td>${i + 1}</td>
                <td>${data[i].name}</td>
                <td>${data[i].description}</td>
                <td>${data[i].image}</td>
                <td>${data[i].price}</td>
+               <td><button onclick="removeProduct(${data[i].id})">DELETE</button></td>
+               <td><button onclick="updateProductForm(${data[i].id})">Update</button></td>
             </tr>`;
-    }
+        }
 
-    function getAll() {
-        $.ajax({
-            url:  "/products",
-            type: "GET",
-            headers: {
-                "Accept": "application/json"
-            },
+        function getAll() {
+            $.ajax({
+                url: "/products",
+                type: "GET",
+                headers: {
+                    "Accept": "application/json"
+                },
 
-            success: function (data) {
-                let content = "";
-                for (let i = 0; i < data.length; i++) {
-                    content += getContent(i, data)
+                success: function (data) {
+                    let content = "";
+                    for (let i = 0; i < data.length; i++) {
+                        content += getContent(i, data)
+                    }
+                    document.getElementById("product").innerHTML = content;
                 }
-                document.getElementById("product").innerHTML = content;
-            }
-        });
-    }
+            });
+        }
 
-    function add() {
-        let name = $('#name').val();
-        let description = $('#description').val();
-        let image = $('#image').val();
-        let price = $('#price').val();
-        let newProduct = {
-            name: name,
-            description: description,
-            image: image,
-            price: price
-        };
-        $.ajax({
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            type: "POST",
-            data: JSON.stringify(newProduct),
-            url: "/products",
-            success: getAll
+        function removeProduct(id) {
+            $.ajax({
+                url: `/products/${id}`,
+                type: "DELETE",
+                success: getAll
+            });
+        }
 
-        })
-    }
+        function updateProductForm(id) {
+            $.ajax({
+                url: `/products/${id}`,
+                type: "GET",
+                success: function (product) {
+                    document.getElementById("update-product").innerHTML =
+                        `<table>
+<tr>
+<td>id</td>
+<td><input type="text" id="id" placeholder="id" value="${product.id}"></td>
+</tr>
 
-    function addNewProduct(){
-        document.getElementById("add-product").innerHTML=`<table>
+<tr>
+<td>name</td>
+<td><input type="text" id="name" placeholder="name" value="${product.name}"></td>
+</tr>
+
+<tr>
+<td>description</td>
+<td><input type="text" id="description" placeholder="description"  value="${product.description}"></td>
+</tr>
+
+<tr>
+<td>image</td>
+<td><input type="text" id="image" placeholder="image"  value="${product.image}"></td>
+</tr>
+
+<tr>
+<td>price</td>
+<td><input type="text" id="price" placeholder="price"  value="${product.price}"></td>
+</tr>
+<tr>
+
+<td><button value="add" onclick="updateProduct()">Update</button></td>
+  </table>`
+                }
+            });
+        }
+
+        function updateProduct(id) {
+            let  name=$('#name').val();
+            let description=$('#description').val();
+            let image=$('#image').val();
+            let price=$('#price').val();
+            let newProduct={
+                id:id,
+                name:name,
+                description:description,
+                image:image,
+                price:price,
+            };
+            $.ajax({
+                type:"PUT",
+                url:`/product/${id}`,
+                headers:{
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                data:JSON.stringify(newProduct),
+                success:getAll
+            });
+            event.preventDefault();
+        }
+
+
+        function add() {
+            let name = $('#name').val();
+            let description = $('#description').val();
+            let image = $('#image').val();
+            let price = $('#price').val();
+            let newProduct = {
+                name: name,
+                description: description,
+                image: image,
+                price: price
+            };
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST",
+                data: JSON.stringify(newProduct),
+                url: "/products",
+                success: getAll
+
+            })
+            event.preventDefault();
+        }
+
+        function addNewProduct() {
+            document.getElementById("add-product").innerHTML = `<table>
 <tr>
 <td><input type="text" id="name" placeholder="name"></td>
 </tr>
@@ -78,13 +152,14 @@
 </tr>
 
 <tr>
-<td><button value="add" onclick="add()"></button></td>
+<td><button value="add" onclick="add()">add</button></td>
 </tr>
 </table>`
-}
- </script>
+        }
+    </script>
+
 </head>
-<body>
+<body onload="getAll()">
 <table>
     <thead>
     <tr>
@@ -99,8 +174,9 @@
     </tbody>
 </table>
 <button onclick="addNewProduct()"> Create</button>
-
-<form id="add-product"></form>
+<table>
+    <thead id="add-product"></thead>
+</table>
 
 <form id="update-product"></form>
 </body>
