@@ -12,7 +12,8 @@ import java.util.List;
 
 @Repository
 public interface IProductRepository extends PagingAndSortingRepository<Product, Long> {
-    Page<Product> findByNameContaining(String name, Pageable pageable);
+    @Query(value = "select * from products where name = ?", nativeQuery = true)
+    Iterable<Product> findByNameContaining(String name);
 //    @Query(value = "call insertProduct(?1, ?2)", nativeQuery = true) //native query = true => gọi SQL
 //    void insertProductUsingProcedure(String name, double price);
 //

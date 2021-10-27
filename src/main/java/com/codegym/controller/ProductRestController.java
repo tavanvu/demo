@@ -15,11 +15,12 @@ public class ProductRestController {
     @Autowired
     private IProductService productService;
 
-
     @GetMapping()
-    public ResponseEntity<Iterable<Product>> findAll() {
-        Iterable<Product> products = productService.findAll();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    public ResponseEntity<Iterable<Product>> findAll(@RequestParam("search") Optional<String> search) {
+        if (search.isPresent()){
+            return new ResponseEntity<>(productService.findByNameContaining(search.get()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping()

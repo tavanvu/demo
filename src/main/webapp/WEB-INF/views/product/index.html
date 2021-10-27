@@ -5,6 +5,7 @@
     <title>Title</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
+
         function getContent(i, data) {
             return `<tr>
                    <td>${i + 1}</td>
@@ -156,10 +157,35 @@
 </tr>
 </table>`
         }
+        function searchProduct(){
+           let search = $('#search').val();
+           $.ajax({
+               url:`/products?search=${search}`,
+               type:"GET",
+               headers :{
+                   'Accept': 'application/json',
+               },
+               success: function (data) {
+                   let content = "";
+                   for (let i = 0; i < data.length; i++) {
+                       content += getContent(i, data)
+                   }
+                   document.getElementById("product").innerHTML = content;
+               }
+           })
+            event.preventDefault();
+        }
     </script>
 
 </head>
 <body onload="getAll()">
+<form>
+    <div>
+        <label> search </label>
+        <input type="text" id="search" placeholder="search">
+        <button onclick="searchProduct()"> search</button>
+    </div>
+</form>
 <table>
     <thead>
     <tr>
@@ -171,6 +197,7 @@
     </tr>
     </thead>
     <tbody id="product">
+
     </tbody>
 </table>
 <button onclick="addNewProduct()"> Create</button>
