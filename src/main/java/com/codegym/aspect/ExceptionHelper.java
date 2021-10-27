@@ -9,6 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionHelper {
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView notFound() {
-        return new ModelAndView("error-404");
+        return new ModelAndView("product/demo/error-404");
     }
 }

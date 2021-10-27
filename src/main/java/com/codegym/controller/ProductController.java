@@ -43,7 +43,7 @@ public class ProductController {
 
     @GetMapping
     public ModelAndView showAll(@RequestParam(name = "q", required = false) String name, @PageableDefault(size = 5) Pageable pageable) {
-        ModelAndView modelAndView = new ModelAndView("/product/list");
+        ModelAndView modelAndView = new ModelAndView("product/demo/list");
         Page<Product> products;
         if (name == null) {
             products = productService.findAll(pageable);
@@ -54,20 +54,10 @@ public class ProductController {
         return modelAndView;
     }
 
-//    @GetMapping("/search")
-//    public ModelAndView findByName(@RequestParam(name = "q") Optional<String> name) {
-//        if (name.isPresent()) {
-//            ModelAndView modelAndView = new ModelAndView("/product/list");
-//            List<Product> products = productService.fin(name.get());
-//            modelAndView.addObject("products", products);
-//            return modelAndView;
-//        }
-//        return new ModelAndView("/error-404");
-//    }
 
     @GetMapping("/create")
     public ModelAndView showCreateForm() {
-        ModelAndView modelAndView = new ModelAndView("/product/create");
+        ModelAndView modelAndView = new ModelAndView("product/demo/create");
         modelAndView.addObject("product", new ProductForm());
         return modelAndView;
     }
@@ -76,7 +66,7 @@ public class ProductController {
     public String createProduct(Model model, @Validated @ModelAttribute(name = "product") ProductForm productForm, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             model.addAttribute("product", productForm);
-            return "/product/create";
+            return "product/demo/create";
         }
         MultipartFile multipartFile = productForm.getImage();
         String fileName = multipartFile.getOriginalFilename();
@@ -102,7 +92,7 @@ public class ProductController {
         if (!product.isPresent()) {
             throw new NotFoundException();
         } else {
-            ModelAndView modelAndView = new ModelAndView("/product/edit");
+            ModelAndView modelAndView = new ModelAndView("product/demo/edit");
             modelAndView.addObject("product", product);
             return modelAndView;
         }
@@ -134,7 +124,7 @@ public class ProductController {
         if (!product.isPresent()) {
             throw new NotFoundException();
         } else {
-            ModelAndView modelAndView = new ModelAndView("/product/delete");
+            ModelAndView modelAndView = new ModelAndView("product/demo/delete");
             modelAndView.addObject("product", product);
             return modelAndView;
         }

@@ -15,48 +15,47 @@ public class ProductRestController {
     @Autowired
     private IProductService productService;
 
-    @GetMapping
-    public ResponseEntity<Iterable<Product>> showAll() {
+
+    @GetMapping()
+    public ResponseEntity<Iterable<Product>> findAll() {
         Iterable<Product> products = productService.findAll();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Product> createNewProduct(@RequestBody Product product) {
+    @PostMapping()
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         return new ResponseEntity<>(productService.save(product), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Optional<Product> productOptional = productService.findById(id);
-        if (!productOptional.isPresent()) {
+        Optional<Product> product1 = productService.findById(id);
+        if (!product1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            if (product.getId() == null) {
-                product.setId(id);
-            }
-            return new ResponseEntity<>(productService.save(product), HttpStatus.OK);
+            product.setId(id);
         }
+        return new ResponseEntity<>(productService.save(product), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-        Optional<Product> productOptional = productService.findById(id);
-        if (!productOptional.isPresent()) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        Optional<Product> product = productService.findById(id);
+        if (!product.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             productService.remove(id);
-            return new ResponseEntity<>("Xóa thành công!", HttpStatus.OK);
         }
+        return new ResponseEntity<>("xóa thành công", HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Optional<Product> productOptional = productService.findById(id);
-        if (!productOptional.isPresent()) {
+    public ResponseEntity<Product> findById(@PathVariable Long id) {
+        Optional<Product> product = productService.findById(id);
+        if (!product.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
+            return new ResponseEntity<>(product.get(), HttpStatus.OK);
         }
     }
 }

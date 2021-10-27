@@ -24,6 +24,6 @@ public class CategoryController {
         if (!categoryOptional.isPresent()) {
             throw new NotFoundException();
         }
-        return new ModelAndView("index");
+        return new ModelAndView("product/demo/index");
     }
 }

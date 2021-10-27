@@ -1,7 +1,5 @@
 package com.codegym.config;
 
-import com.codegym.aspect.Logger;
-import com.codegym.formater.CategoryFormatter;
 import com.codegym.service.CategoryService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -121,7 +119,7 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/product_management");
         dataSource.setUsername("root");
-        dataSource.setPassword("12345678");
+        dataSource.setPassword("221098");
         return dataSource;
     }
 
@@ -139,13 +137,4 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         return properties;
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
-    }
-
-//    @Bean
-//    public Logger logger(){
-//        return new Logger();
-//    }
 }

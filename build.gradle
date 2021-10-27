@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     //Thư viên của Spring Core
     implementation group: 'org.springframework', name: 'spring-core', version: '5.3.10'
@@ -29,16 +30,16 @@ dependencies {
     implementation group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.3.0.Final'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
     implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.5.5'
-    //Validate
-    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    implementation group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.10.Final'
+    //Vadition
+    implementation group: 'javax.validation' , name: 'validation-api' , version: '2.0.1.Final'
+    implementation group: 'org.hibernate' , name: 'hibernate-validator', version: '6.0.10.Final'
+    //Spring aspects
+    implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.11'
 
-    //AOP
-    implementation group: 'org.springframework', name: 'spring-aspects', version: '5.3.2'
-
-    //Webservice
-    implementation group: 'org.springframework', name: 'spring-tx', version: '5.3.2'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.1'
+    //RestFul
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: '2.12.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.3'
 }
 
 test {

@@ -1,0 +1,128 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+<!--    <script>-->
+<!--        function getContent(i, data) {-->
+<!--            return `<tr>-->
+<!--                                             <td>${i + 1}</td>-->
+<!--                                             <td>${data.content[i].name}</td>-->
+<!--                                             <td>${data.content[i].price}</td>-->
+<!--                                             <td>${data.content[i].description}</td>-->
+<!--                                             <td>${data.content[i].image}</td>-->
+<!--                                              <td><button onclick="removeProduct(${data.content[i].id})"> DELETE</button></td>-->
+<!--                                            </tr>`;-->
+<!--        }-->
+
+<!--        function handsucsess() {-->
+<!--            return function () {-->
+<!--                $.ajax({-->
+<!--                    type: 'GET',-->
+<!--                    url: `/products`,-->
+<!--                    success: function (data) {-->
+<!--                        let content = "";-->
+<!--                        for (let i = 0; i < data.content.length; i++) {-->
+<!--                            content += getContent(i, data)-->
+<!--                        }-->
+<!--                        document.getElementById("table-body").innerHTML = content-->
+<!--                    }-->
+<!--                });-->
+<!--            };-->
+<!--        }-->
+
+<!--        function removeProduct(id) {-->
+<!--            $.ajax({-->
+<!--                url: `/products/${id}`,-->
+<!--                type: 'DELETE',-->
+<!--                success: handsucsess()-->
+<!--            })-->
+<!--        }-->
+<!--        function addProduct(){-->
+<!--            let name=$('#name').val();-->
+<!--            let price=$('#price').val();-->
+<!--            let description=$('#description').val();-->
+<!--            let image=$('#image').val();-->
+<!--            let newProduct={-->
+<!--                name:name,-->
+<!--                price:price,-->
+<!--                description:description,-->
+<!--                image:image-->
+<!--            };-->
+<!--            $.ajax({-->
+<!--                url:"/products",-->
+<!--                type:"POST",-->
+<!--                data:JSON.stringify(newProduct),-->
+<!--                headers:{-->
+<!--                    'Accept': 'application/json',-->
+<!--                    'Content-Type': 'application/json'-->
+<!--                },-->
+<!--                success:handsucsess();-->
+<!--            });-->
+<!--            event.preventDefault();-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<form id="add-smartphone">-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>Name:</td>-->
+<!--            <td><input type="text" id="name" placeholder="Name"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>price:</td>-->
+<!--            <td><input type="text" id="price" placeholder="Price"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Description:</td>-->
+<!--            <td><input type="text" id="description" placeholder="Description"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Image:</td>-->
+<!--            <td><input type="text" id="image" placeholder="Image"></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td></td>-->
+<!--            <td><input type="submit" value="Add" onclick="addProduct()"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+<!--<a th:href="@{/product/create}">Create new product</a>-->
+<!--<h1>List Product</h1>-->
+<!--<form action="/product" method="get">-->
+<!--    <input type="text" name="q" placeholder="search">-->
+<!--    <button>Search</button>-->
+<!--</form>-->
+<!--<form action="/product/search" method="get">-->
+<!--    <input type="text" name="q" placeholder="search voi getMapping /search">-->
+<!--    <button>Search</button>-->
+<!--</form>-->
+<!--<table>-->
+<!--    <tr>-->
+<!--        <td>#</td>-->
+<!--        <td>Name</td>-->
+<!--        <td>Price</td>-->
+<!--        <td>Description</td>-->
+<!--        <td>Image</td>-->
+<!--        <td>Edit</td>-->
+<!--        <td>Delete</td>-->
+<!--    </tr>-->
+<!--    <tr th:each="product, productStat : ${products}">-->
+<!--        <td th:text="${productStat.count}"></td>-->
+<!--        <td th:text="${product.name}"></td>-->
+<!--        <td th:text="${product.price}"></td>-->
+<!--        <td th:text="${product.description}"></td>-->
+<!--        <td><img width="150" height="150" th:src="@{'/img/' + ${product.image}}"></td>-->
+<!--        <td><a th:href="@{/product/edit/__${product.id}__}">Edit</a></td>-->
+<!--        <td>-->
+<!--            <button th:onclick="|removeProduct(${product.id})|"> DELETE</button>-->
+<!--        </td>-->
+<!--        <td>-->
+<!--            <button th:onclick="|detail(${product.id})|"> Detail</button>-->
+<!--        </td>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--</body>-->
+<!--</html>-->
